@@ -8,8 +8,8 @@ namespace sql_server_webapp.Controllers
 {
     public class StudentsController : Controller
     {
-        public readonly ApplicationDbContext dbContext;
-        public StudentsController(ApplicationDbContext dbContext)
+        private readonly ApplicationDbContext dbContext;
+        public StudentsController(ApplicationDbContext dbContext) // connect to a db context
         {
             this.dbContext = dbContext;
         }
@@ -19,7 +19,8 @@ namespace sql_server_webapp.Controllers
             return View();
         }
         [HttpPost] //to add a student record
-        public async Task<IActionResult> Add(AddStudentViewModel viewModel)
+        public async Task<IActionResult> Add(AddStudentViewModel viewModel) //create a model AddStudentViewModel, async para maghintay muna ng value bago mag run ang method na ito
+
         {
             var student = new Student
             {
@@ -77,7 +78,7 @@ namespace sql_server_webapp.Controllers
 
             if (student is not null)
             {
-                dbContext.Students.Remove(viewModel);
+                dbContext.Students.Remove(student);
                 await dbContext.SaveChangesAsync();
             }
             return RedirectToAction("List", "Students");
